@@ -23,18 +23,36 @@ contract TestTicket {
         Assert.equal(t.active(), true, "ticket should still be active after transfer");
     }
 
-    function testUseNonOwner() {
-        Ticket t = new Ticket();
-        address otherUser = 0x123;
-        t.transfer(otherUser);
 
-        t.use();
-        Assert.equal(t.active(), true, "non-owner cannot use ticket");
+    function testReturnTicket() {
+        address newOwner = 0x123;
+
+        Ticket t = new Ticket();
+        address originalOwner = address(this); 
+
+        t.transfer(newOwner);
+
+        Assert.equal(t.owner(), newOwner, "owner is not equal to new owner");
+        Assert.notEqual(t.owner(), originalOwner, "previous owner is still owner"); 
+
+        t.transfer(originalOwner);
+
+        Assert.equal(t.owner(), originalOwner, "original owner did not get ticket back");
+        Assert.notEqual(t.owner(), newOwner, "previous owner is still owner"); 
     }
 
-    function testUseAsOwner() {
+    function testDeactivateNonOwner() {
         Ticket t = new Ticket();
-        t.use();
+        address otherDeactivater = 0x123;
+        t.transfer(otherDeactivater);
+
+        t.deactivate();
+        Assert.equal(t.active(), true, "non-owner cannot deactivate ticket");
+    }
+
+    function testDeactivateAsOwner() {
+        Ticket t = new Ticket();
+        t.deactivate();
         Assert.equal(t.active(), false, "using ticket as owner did not set active to false");
     }
 }
