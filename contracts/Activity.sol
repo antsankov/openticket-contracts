@@ -3,7 +3,7 @@ pragma solidity ^0.4.4;
 import "./Ticket.sol";
 
 contract Activity {
-    mapping (address => Ticket) holders;
+    mapping (address => Ticket) claims;
     uint public available;
     uint public claimed;
 
@@ -17,15 +17,15 @@ contract Activity {
       claimed = 0;
     }
 
-    event Claim(address indexed _claimer, uint indexed _available, uint indexed _claimed);
+    event Claim(address indexed _requestor, uint indexed _available, uint indexed _claimed);
 
-    function claim(address claimer)
+    function claim(address requestor)
         isFull
         {
             available -= 1;
             claimed += 1;
             Ticket t = new Ticket();
 
-            Claim(claimer, available, claimed);
+            Claim(requestor, available, claimed);
         }
 }
