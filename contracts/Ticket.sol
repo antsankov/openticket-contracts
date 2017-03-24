@@ -26,7 +26,7 @@ contract Ticket {
         creator = msg.sender;
         owner = msg.sender;
         active = true;
-	}
+	  }
 
     function transfer(address to)
         onlyCreator
