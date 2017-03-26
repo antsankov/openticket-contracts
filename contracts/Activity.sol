@@ -3,11 +3,12 @@ pragma solidity ^0.4.4;
 import "./Ticket.sol";
 
 contract Activity {
-    mapping (address => Ticket) claims;
+    // map between address of claiment, and address of ticket.
+    mapping (address => address) public claims;
     uint public available;
     uint public claimed;
 
-    modifier isFull() {
+    modifier hasAvailable() {
         if (available == 0) return;
         _;
     }
@@ -20,11 +21,13 @@ contract Activity {
     event Claim(address indexed _requestor, uint indexed _available, uint indexed _claimed);
 
     function claim(address requestor)
-        isFull
+        hasAvailable
         {
             available -= 1;
             claimed += 1;
-            Ticket t = new Ticket();
+            Ticket t = new Ticket(requestor);
+
+            claims[requestor] = address(t);
 
             Claim(requestor, available, claimed);
         }

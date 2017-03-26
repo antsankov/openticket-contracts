@@ -22,9 +22,9 @@ contract Ticket {
 
     event Transfer(address indexed _from, address indexed _to);
 
-    function Ticket() {
+    function Ticket(address requestor) {
         creator = msg.sender;
-        owner = msg.sender;
+        owner = requestor;
         active = true;
 	  }
 
