@@ -3,8 +3,13 @@ pragma solidity ^0.4.4;
 import "./Ticket.sol";
 
 contract Activity {
+
+    struct test_ticket {
+      bool active;
+    }
+
     // map between address of claiment, and address of ticket.
-    mapping (address => address) public claims;
+    mapping (address => test_ticket) public claims;
     uint public available;
     uint public claimed;
 
@@ -18,17 +23,23 @@ contract Activity {
       claimed = 0;
     }
 
-    event Claim(address indexed _requestor, uint indexed _available, uint indexed _claimed);
+    event Claim(address indexed _requestor, uint _available, uint _claimed);
 
     function claim(address requestor)
         hasAvailable
         {
             available -= 1;
             claimed += 1;
-            Ticket t = new Ticket(requestor);
-
-            claims[requestor] = address(t);
+            claims[requestor].active = true;
 
             Claim(requestor, available, claimed);
         }
+
+    function deactivate(address requestor){
+        if (claims[requestor].active == true) {
+            claims[requestor].active = false;
+            available += 1;
+            claimed -= 1;
+        }
+    }
 }

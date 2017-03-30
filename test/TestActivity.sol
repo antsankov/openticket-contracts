@@ -21,12 +21,26 @@ contract TestActivity {
 
         Assert.equal(a.available(), 9, "avaialble tickets did not change");
         Assert.equal(a.claimed(), 1, "claimed tickets did not change");
-        Assert.notEqual(a.claims(r1), 0, "ticket not claimed in mapping");
+        Assert.equal(a.claims(r1), true, "claimed ticket is not active");
+        Assert.equal(a.claims(r2), false, "r2 ");
 
         a.claim(r2);
 
         Assert.equal(a.available(), 8, "avaialble tickets did not change");
         Assert.equal(a.claimed(), 2, "claimed tickets did not change");
-        Assert.notEqual(a.claims(r2), 0, "ticket not claimed in mapping");
-    }
+        Assert.equal(a.claims(r2), true, "claimed ticket is not active");
+
+        a.deactivate(r1);
+
+        Assert.equal(a.claims(r1), false, "deactivated ticket still active");
+        Assert.equal(a.claims(r2), true, "claimed ticket is not active");
+        Assert.equal(a.available(), 9, "avaialble tickets did not change");
+        Assert.equal(a.claimed(), 1, "claimed tickets did not change");
+
+        a.deactivate(r2);
+        Assert.equal(a.claims(r1), false, "deactivated ticket still active");
+        Assert.equal(a.claims(r2), false, "claimed ticket is not active");
+        Assert.equal(a.available(), 10, "avaialble tickets did not change");
+        Assert.equal(a.claimed(), 0, "claimed tickets did not change");
+      }
 }
