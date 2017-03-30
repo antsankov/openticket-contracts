@@ -14,18 +14,31 @@ var activity = contract(activity_spec);
 activity.setProvider(new web3.providers.HttpProvider("http://localhost:8545"));
 
 // Step 4: Use the contract!
-var claimed = activity.deployed().then(
-  contract => contract.claimed().then(
-    claimed.valueOf()
-))
+// var claimed = activity.deployed().then(
+//   contract => contract.claimed().then(
+//     claimed.valueOf()
+// ))
 
-app.get("/", function(req, res){
+app.get("/concert/claimed", function(req, res){
+  res.type('text/plain');
+
   activity.deployed().then(
     contract => contract.claimed()
   ).then(
-    claimed => res.send("<h1>Claimed Tickets: </h1>" + claimed.valueOf())
+    claimed => res.send(claimed.valueOf()) // send text response
   )
 });
+
+app.get("/concert/available", function(req, res){
+  res.type('text/plain');
+
+  activity.deployed().then(
+    contract => contract.available()
+  ).then(
+    available => res.send(available.valueOf()) // send text response
+  )
+});
+
 
 
 http.listen(8080, function(){
