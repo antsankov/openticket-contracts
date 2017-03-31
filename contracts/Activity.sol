@@ -8,7 +8,6 @@ contract Activity {
       bool active;
     }
 
-    // map between address of claiment, and address of ticket.
     mapping (address => test_ticket) public claims;
     uint public available;
     uint public claimed;
@@ -41,5 +40,10 @@ contract Activity {
             available += 1;
             claimed -= 1;
         }
+    }
+
+    function trade(address giver, address reciever){
+        deactivate(giver);
+        claim(reciever);
     }
 }
