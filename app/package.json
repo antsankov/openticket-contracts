@@ -4,6 +4,7 @@
   "description": "test activity",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "ethereumjs-tx": "^1.2.5",
     "express": "^4.15.2",
     "truffle-contract": "^2.0.0",

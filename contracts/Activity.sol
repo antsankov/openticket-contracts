@@ -1,12 +1,9 @@
 pragma solidity ^0.4.4;
 
-import "../contracts/Account.sol";
-
 contract Activity {
 
     struct ticket {
       bool active;
-      uint price;
     }
 
     mapping (address => ticket) public claims;
@@ -15,10 +12,6 @@ contract Activity {
 
     function getTicketActiveFromAccount(address account) returns (bool){
       return claims[account].active;
-    }
-
-    function getTicketPriceFromAccount(address account) returns (uint){
-      return claims[account].price;
     }
 
     modifier hasAvailable() {
@@ -31,18 +24,17 @@ contract Activity {
       claimed = 0;
     }
 
-    event Claim(address indexed _requestor, uint _available, uint _claimed, uint _price);
+    event Claim(address indexed _requestor, uint _available, uint _claimed);
 
-    function claim(address requestor, uint price)
+    function claim(address requestor)
         hasAvailable
         {
             available -= 1;
             claimed += 1;
 
             claims[requestor].active = true;
-            claims[requestor].price = price;
 
-            Claim(requestor, available, claimed, price);
+            Claim(requestor, available, claimed);
         }
 
     function deactivate(address requestor){
@@ -53,8 +45,8 @@ contract Activity {
         }
     }
 
-    function trade(address giver, address reciever, uint price){
+    function trade(address giver, address reciever){
         deactivate(giver);
-        claim(reciever, price);
+        claim(reciever);
     }
 }

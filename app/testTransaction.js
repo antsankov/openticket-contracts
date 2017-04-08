@@ -24,6 +24,7 @@ tx.sign(privateKey);
 
 // This is what gets encoded in the qr code
 var serializedTx = tx.serialize();
+console.log(serializedTx.toString('hex'))
 
 // What gets run by the usher
 console.log( "OLD BALANCE " + web3.eth.getBalance('0x508793fb2deb0c9d10f22797bb3229e57f37ba2e'))
